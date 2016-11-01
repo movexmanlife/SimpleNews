@@ -29,4 +29,8 @@
     <string name="title_activity_news_detail">NewsDetailActivity</string>
 
     <string name="image_hit">一次只加载20条，查看更多内容请刷新哦。</string>
+    <string name="share_qq">分享到QQ</string>
+    <string name="share_sina">分享到微博</string>
+    <string name="share_wechat">分享到微信</string>
+    <string name="share_sms">分享到短信</string>
 </resources>

@@ -29,6 +29,6 @@ public class ToastUtil {
     }
 
     private static Context getContext() {
-        return App.getInstance().getApplicationContext();
+        return App.getInstance();
     }
 }

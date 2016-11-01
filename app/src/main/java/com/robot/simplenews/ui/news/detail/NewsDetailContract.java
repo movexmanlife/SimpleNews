@@ -8,6 +8,7 @@ import com.robot.simplenews.ui.base.BaseView;
 public class NewsDetailContract {
     public interface View extends BaseView {
         void showNewsDetialContent(String newsDetailContent) ;
+        void showShareDialog();
         void showProgress();
         void hideProgress();
     }

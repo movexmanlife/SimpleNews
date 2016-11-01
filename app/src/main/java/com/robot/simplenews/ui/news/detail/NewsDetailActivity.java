@@ -3,23 +3,34 @@ package com.robot.simplenews.ui.news.detail;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.robot.simplenews.R;
+import com.robot.simplenews.adapter.OnItemClickListener;
+import com.robot.simplenews.adapter.ShareAdapter;
 import com.robot.simplenews.entity.NewsEntity;
 import com.robot.simplenews.util.DensityUtil;
 import com.robot.simplenews.util.ImageLoaderUtil;
+import com.robot.simplenews.util.ToastUtil;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -30,12 +41,15 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailC
     private static final String TAG = NewsDetailActivity.class.getSimpleName();
     private static final String KEY_PARAM_NEWS = "news";
 
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.htNewsContent)
     HtmlTextView mTVNewsContent;
     @BindView(R.id.progress)
     ProgressBar mProgressBar;
+    BottomSheetDialog mDialog;
 
     private SwipeBackLayout mSwipeBackLayout;
     private NewsDetailPresenter mNewsDetailPresenter;
@@ -98,9 +112,52 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailC
         mProgressBar.setVisibility(View.GONE);
     }
 
+    @OnClick(R.id.fab)
+    public void onShare() {
+        showShareDialog();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mNewsDetailPresenter.detachView();
+    }
+
+    @Override
+    public void showShareDialog() {
+        RecyclerView recyclerView = (RecyclerView) LayoutInflater.from(this)
+                .inflate(R.layout.share_list, null);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        ShareAdapter adapter = new ShareAdapter(this);
+        adapter.setOnItemClickListener(new OnShareItemClickListener());
+        recyclerView.setAdapter(adapter);
+
+        if (mDialog == null) {
+            mDialog = new BottomSheetDialog(this);
+        }
+        mDialog.setContentView(recyclerView);
+        mDialog.show();
+    }
+
+    public class OnShareItemClickListener implements OnItemClickListener {
+        public OnShareItemClickListener() {
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            int msgResId = R.string.share_qq;
+            if (position == ShareAdapter.SHARE_POSITION_QQ) {
+                msgResId = R.string.share_qq;
+            } else if (position == ShareAdapter.SHARE_POSITION_SINA) {
+                msgResId = R.string.share_sina;
+            } else if (position == ShareAdapter.SHARE_POSITION_WECHAT) {
+                msgResId = R.string.share_wechat;
+            }else if (position == ShareAdapter.SHARE_POSITION_SMS) {
+                msgResId = R.string.share_sms;
+            }
+            ToastUtil.show(msgResId);
+            mDialog.dismiss();
+        }
     }
 }
