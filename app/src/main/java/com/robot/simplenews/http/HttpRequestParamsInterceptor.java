@@ -20,7 +20,6 @@ import okhttp3.Response;
  * Http请求参数拦截器
  * （1）添加和获取Http的Header参数
  * （2）添加公共参数（GET、POST情况下）
- * Created by GaoYL on 2016/6/6.
  */
 class HttpRequestParamsInterceptor implements Interceptor {
     private static final String TAG = HttpRequestParamsInterceptor.class.getName();
