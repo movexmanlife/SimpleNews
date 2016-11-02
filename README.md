@@ -11,3 +11,6 @@ This project use:
 (3)Retrofit;
 
 (4)BottomSheetDialog,DayNight Theme;
+
+<img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot1.gif"/>
+<img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot2.gif"/>
