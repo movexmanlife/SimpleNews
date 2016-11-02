@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@color/setting_text_bg"
         android:padding="12dp">
 
         <ImageView
@@ -32,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="@dimen/sn_16sp"
                 android:singleLine="true"/>
 
@@ -41,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:textColor="@color/secondary_text"
+                android:textColor="@color/setting_text_color"
                 android:maxLines="2"
                 android:textSize="@dimen/sn_12sp"/>
         </LinearLayout>

@@ -32,6 +32,13 @@ public class ImageFragment extends Fragment implements ImageContract.View, Swipe
     private List<ImageEntity> mData;
     private ImagePresenter mImagePresenter;
 
+    public static ImageFragment newInstance() {
+        Bundle args = new Bundle();
+        ImageFragment fragment = new ImageFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

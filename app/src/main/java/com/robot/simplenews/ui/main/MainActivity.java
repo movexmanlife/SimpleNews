@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.robot.simplenews.R;
 import com.robot.simplenews.ui.about.AboutFragment;
+import com.robot.simplenews.ui.base.BaseActivity;
 import com.robot.simplenews.ui.images.ImageFragment;
 import com.robot.simplenews.ui.news.AllNewsFragment;
+import com.robot.simplenews.ui.setting.SettingFragment;
 import com.robot.simplenews.ui.weather.WeatherFragment;
 
 import butterknife.BindView;
@@ -20,8 +21,9 @@ import butterknife.ButterKnife;
 
 /**
  */
-public class MainActivity extends AppCompatActivity implements MainContract.View {
-
+public class MainActivity extends BaseActivity implements MainContract.View {
+    private static final String KEY_PARAM_POSITION_SELECTED = "positionSelected";
+    private static final int DEFAULT_POSITION_SELECTED = R.id.navigation_item_news;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar)
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @BindView(R.id.navigation_view)
     NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
+    private int mCurPositionSelected = DEFAULT_POSITION_SELECTED;
     private MainPresenter mMainPresenter;
 
     @Override
@@ -46,7 +49,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mMainPresenter = new MainPresenter(this);
         mMainPresenter.attachView(this);
-        switch2News();
+        restoreSavedData(savedInstanceState);
+        mMainPresenter.switchNavigation(mCurPositionSelected);
+    }
+
+    private void restoreSavedData(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mCurPositionSelected = savedInstanceState.getInt(KEY_PARAM_POSITION_SELECTED, DEFAULT_POSITION_SELECTED);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_PARAM_POSITION_SELECTED, mCurPositionSelected);
     }
 
     @Override
@@ -71,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        mCurPositionSelected = menuItem.getItemId();
                         mMainPresenter.switchNavigation(menuItem.getItemId());
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
@@ -81,25 +98,31 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void switch2News() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AllNewsFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, AllNewsFragment.newInstance()).commit();
         mToolbar.setTitle(R.string.navigation_news);
     }
 
     @Override
     public void switch2Images() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ImageFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, ImageFragment.newInstance()).commit();
         mToolbar.setTitle(R.string.navigation_images);
     }
 
     @Override
     public void switch2Weather() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new WeatherFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, WeatherFragment.newInstance()).commit();
         mToolbar.setTitle(R.string.navigation_weather);
     }
 
     @Override
+    public void switch2Setting() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, SettingFragment.newInstance()).commit();
+        mToolbar.setTitle(R.string.navigation_setting);
+    }
+
+    @Override
     public void switch2About() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AboutFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, AboutFragment.newInstance()).commit();
         mToolbar.setTitle(R.string.navigation_about);
     }
 

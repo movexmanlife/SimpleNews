@@ -44,10 +44,9 @@
     </style>
 
     <!--好像不起作用-->
-    <style name="NewsDetailToolBarStyle" parent="ThemeOverlay.AppCompat.Light">
+    <style name="NewsDetailToolBarStyle" parent="ThemeOverlay.AppCompat.Dark">
     </style>
     <!--好像不起作用-->
-    <style name="NewsDetailApplayoutBarStyle" parent="ThemeOverlay.AppCompat.Light">
+    <style name="NewsDetailApplayoutBarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
     </style>
-
 </resources>

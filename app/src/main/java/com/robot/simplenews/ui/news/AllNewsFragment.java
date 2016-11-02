@@ -18,18 +18,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  */
 public class AllNewsFragment extends Fragment {
-
     public static final int NEWS_TYPE_TOP = 0;
     public static final int NEWS_TYPE_NBA = 1;
     public static final int NEWS_TYPE_CARS = 2;
     public static final int NEWS_TYPE_JOKES = 3;
 
-    private TabLayout mTablayout;
-    private ViewPager mViewPager;
+    @BindView(R.id.tab_layout)
+    TabLayout mTablayout;
+    @BindView(R.id.viewpager)
+    ViewPager mViewPager;
+
     private Map<Integer, String> sMap = new HashMap<>();
+
+    public static AllNewsFragment newInstance() {
+        Bundle args = new Bundle();
+        AllNewsFragment fragment = new AllNewsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +56,8 @@ public class AllNewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, null);
-        mTablayout = (TabLayout) view.findViewById(R.id.tab_layout);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        ButterKnife.bind(this, view);
+
         mViewPager.setOffscreenPageLimit(3);
         setupViewPager(mViewPager);
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/content_bg"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -12,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/setting_text_bg"
             android:orientation="vertical"
             android:padding="15dp">
 
@@ -20,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/app_name"
-                android:textColor="@color/text_gray_dark"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -29,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text=""
-                android:textColor="@color/text_gray_light"
+                android:textColor="@color/setting_text_color"
                 android:textSize="13sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -42,6 +44,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/setting_text_bg"
             android:orientation="vertical"
             android:padding="15dp">
 
@@ -49,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_description"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="16sp" />
 
 
@@ -58,6 +62,7 @@
                 android:layout_marginTop="10dp"
                 android:autoLink="web"
                 android:text="@string/app_github_url"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -66,6 +71,7 @@
                 android:layout_marginTop="10dp"
                 android:autoLink="web"
                 android:text="@string/author"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -74,6 +80,7 @@
                 android:layout_marginTop="10dp"
                 android:autoLink="email"
                 android:text="@string/email"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -82,6 +89,7 @@
                 android:layout_marginTop="10dp"
                 android:autoLink="web"
                 android:text="@string/blog"
+                android:textColor="@color/setting_text_dark_color"
                 android:textSize="16sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>

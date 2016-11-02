@@ -54,4 +54,6 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.8'
     // logger
     compile 'com.orhanobut:logger:1.15'
+    // switchbutton
+    compile 'com.kyleduo.switchbutton:library:1.4.4'
 }

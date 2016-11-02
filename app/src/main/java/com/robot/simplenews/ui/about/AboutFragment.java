@@ -1,5 +1,7 @@
 package com.robot.simplenews.ui.about;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,13 @@ public class AboutFragment extends Fragment implements AboutContract.View {
     @BindView(R.id.tv_version)
     TextView mVersionTv;
     private AboutPresenter mAboutPresenter;
+
+    public static AboutFragment newInstance() {
+        Bundle args = new Bundle();
+        AboutFragment fragment = new AboutFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

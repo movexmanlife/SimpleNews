@@ -48,6 +48,13 @@ public class WeatherFragment extends Fragment implements WeatherContract.View {
     @BindView(R.id.root_layout)
     FrameLayout mRootLayout;
 
+    public static WeatherFragment newInstance() {
+        Bundle args = new Bundle();
+        WeatherFragment fragment = new WeatherFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

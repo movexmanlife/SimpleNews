@@ -18,6 +18,11 @@
             android:title="@string/navigation_weather" />
 
         <item
+            android:id="@+id/navigation_item_setting"
+            android:icon="@drawable/ic_write_setting"
+            android:title="@string/navigation_setting" />
+
+        <item
             android:id="@+id/navigation_item_about"
             android:icon="@drawable/ic_portrait_white_24dp"
             android:title="@string/navigation_about" />
