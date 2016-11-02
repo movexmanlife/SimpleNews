@@ -24,7 +24,7 @@ import okhttp3.Response;
 class HttpRequestParamsInterceptor implements Interceptor {
     private static final String TAG = HttpRequestParamsInterceptor.class.getName();
     private static final String KEY_REQUEST_PARAM_HEADER_COOKIE = "Cookie";
-    private static final String KEY_RESPONSE_PARAM_HEADER_BEAN = "bbzc_resp";
+    private static final String KEY_RESPONSE_PARAM_HEADER_BEAN = "header";
     private static final String PARAM_SERVICE = "service";
     private static final String PARAM_SIGN = "sign";
     private static final String POST = "POST";
