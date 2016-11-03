@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     /**
-     * ÇĞ»»²»Í¬µÄFragment
+     * åˆ‡æ¢ä¸åŒçš„Fragment
      */
     public void switchFragment(int id) {
         FragmentManager manager = getSupportFragmentManager();
@@ -205,7 +205,18 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         if (fragment == null) {
             try {
                 Method newInstanceMethod = clazz.getDeclaredMethod("newInstance");;
-                fragment = (Fragment) newInstanceMethod.invoke(null);
+                fragment = (Fragment)(newInstanceMethod.invoke(null));
+                if (fragment instanceof AllNewsFragment) {
+                    mAllNewsFragment = (AllNewsFragment)fragment;
+                } else if (fragment instanceof ImageFragment) {
+                    mImageFragment = (ImageFragment)fragment;
+                } else if (fragment instanceof WeatherFragment) {
+                    mWeatherFragment = (WeatherFragment)fragment;
+                } else if (fragment instanceof SettingFragment) {
+                    mSettingFragment = (SettingFragment)fragment;
+                } else if (fragment instanceof AboutFragment) {
+                    mAboutFragment = (AboutFragment)fragment;
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -215,7 +226,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     /**
-     * ÏÈÈ«²¿Òş²Ø
+     * å…ˆå…¨éƒ¨éšè—
      * @param fragmentManager
      * @param transaction
      */
@@ -229,7 +240,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     /**
-     * »Ö¸´fragment
+     * æ¢å¤fragment
      */
     private void restoreFragments() {
         FragmentManager manager = getSupportFragmentManager();
