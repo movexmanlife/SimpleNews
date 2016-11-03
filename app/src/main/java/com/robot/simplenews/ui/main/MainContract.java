@@ -7,11 +7,11 @@ import com.robot.simplenews.ui.base.BaseView;
  */
 public class MainContract {
     public interface View extends BaseView {
-        void switch2News();
-        void switch2Images();
-        void switch2Weather();
-        void switch2Setting();
-        void switch2About();
+        void switch2News(int id);
+        void switch2Images(int id);
+        void switch2Weather(int id);
+        void switch2Setting(int id);
+        void switch2About(int id);
     }
 
     public interface Presenter extends BasePresenter<View> {

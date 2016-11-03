@@ -34,22 +34,22 @@ public class MainPresenter implements MainContract.Presenter {
     public void switchNavigation(int id) {
         switch (id) {
             case R.id.navigation_item_news:
-                mMainView.switch2News();
+                mMainView.switch2News(id);
                 break;
             case R.id.navigation_item_images:
-                mMainView.switch2Images();
+                mMainView.switch2Images(id);
                 break;
             case R.id.navigation_item_weather:
-                mMainView.switch2Weather();
+                mMainView.switch2Weather(id);
                 break;
             case R.id.navigation_item_setting:
-                mMainView.switch2Setting();
+                mMainView.switch2Setting(id);
                 break;
             case R.id.navigation_item_about:
-                mMainView.switch2About();
+                mMainView.switch2About(id);
                 break;
             default:
-                mMainView.switch2News();
+                mMainView.switch2News(id);
                 break;
         }
     }
