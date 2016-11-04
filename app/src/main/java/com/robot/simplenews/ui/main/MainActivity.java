@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,6 +17,7 @@ import com.robot.simplenews.event.EventTag;
 import com.robot.simplenews.event.RxBus;
 import com.robot.simplenews.ui.about.AboutFragment;
 import com.robot.simplenews.ui.base.BaseActivity;
+import com.robot.simplenews.ui.base.BaseFragment;
 import com.robot.simplenews.ui.images.ImageFragment;
 import com.robot.simplenews.ui.news.AllNewsFragment;
 import com.robot.simplenews.ui.setting.SettingFragment;
@@ -58,11 +60,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private ActionBarDrawerToggle mDrawerToggle;
     private MainPresenter mMainPresenter;
     private Observable<Boolean> mNightModeObservable;
-    private AllNewsFragment mAllNewsFragment;
-    private ImageFragment mImageFragment;
-    private WeatherFragment mWeatherFragment;
-    private SettingFragment mSettingFragment;
-    private AboutFragment mAboutFragment;
+    private BaseFragment mAllNewsFragment;
+    private BaseFragment mImageFragment;
+    private BaseFragment mWeatherFragment;
+    private BaseFragment mSettingFragment;
+    private BaseFragment mAboutFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,46 +185,36 @@ public class MainActivity extends BaseActivity implements MainContract.View {
      */
     public void switchFragment(int id) {
         FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        hideFragments(manager, transaction);
+        FragmentTransaction trans = manager.beginTransaction();
+        hideFragments(manager, trans);
 
         if (id == R.id.navigation_item_news) {
-            selectedFragment(transaction, mAllNewsFragment, AllNewsFragment.class, FRAGMENT_TAG_NEWS);
+            mAllNewsFragment = selectedFragment(trans, mAllNewsFragment, AllNewsFragment.class, FRAGMENT_TAG_NEWS);
         } else if (id == R.id.navigation_item_images) {
-            selectedFragment(transaction, mImageFragment, ImageFragment.class, FRAGMENT_TAG_IMAGE);
+            mImageFragment = selectedFragment(trans, mImageFragment, ImageFragment.class, FRAGMENT_TAG_IMAGE);
         } else if (id == R.id.navigation_item_weather) {
-            selectedFragment(transaction, mWeatherFragment, WeatherFragment.class, FRAGMENT_TAG_WEATHER);
+            mWeatherFragment = selectedFragment(trans, mWeatherFragment, WeatherFragment.class, FRAGMENT_TAG_WEATHER);
         } else if (id == R.id.navigation_item_setting) {
-            selectedFragment(transaction, mSettingFragment, SettingFragment.class, FRAGMENT_TAG_SETTING);
+            mSettingFragment = selectedFragment(trans, mSettingFragment, SettingFragment.class, FRAGMENT_TAG_SETTING);
         } else if (id == R.id.navigation_item_about) {
-            selectedFragment(transaction, mAboutFragment, AboutFragment.class, FRAGMENT_TAG_ABOUT);
+            mAboutFragment = selectedFragment(trans, mAboutFragment, AboutFragment.class, FRAGMENT_TAG_ABOUT);
         }
-        transaction.commit();
+        trans.commit();
     }
 
-    private void selectedFragment(FragmentTransaction transaction, Fragment fragment, Class<?> clazz, String tag) {
+    private BaseFragment selectedFragment(FragmentTransaction transaction, BaseFragment fragment, Class<?> clazz, String tag) {
         mFragmentCurrentTag = tag;
         if (fragment == null) {
             try {
                 Method newInstanceMethod = clazz.getDeclaredMethod("newInstance");;
-                fragment = (Fragment)(newInstanceMethod.invoke(null));
-                if (fragment instanceof AllNewsFragment) {
-                    mAllNewsFragment = (AllNewsFragment)fragment;
-                } else if (fragment instanceof ImageFragment) {
-                    mImageFragment = (ImageFragment)fragment;
-                } else if (fragment instanceof WeatherFragment) {
-                    mWeatherFragment = (WeatherFragment)fragment;
-                } else if (fragment instanceof SettingFragment) {
-                    mSettingFragment = (SettingFragment)fragment;
-                } else if (fragment instanceof AboutFragment) {
-                    mAboutFragment = (AboutFragment)fragment;
-                }
+                fragment = (BaseFragment)(newInstanceMethod.invoke(null));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             transaction.add(R.id.frame_content, fragment, tag);
         }
         transaction.show(fragment);
+        return fragment;
     }
 
     /**
@@ -246,17 +238,21 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         for (int i = 0; i < mFragmentTags.length; i++) {
-            Fragment fragment = manager.findFragmentByTag(mFragmentTags[i]);
-            if (fragment instanceof AllNewsFragment) {
-                mAllNewsFragment = (AllNewsFragment)fragment;
-            } else if (fragment instanceof ImageFragment) {
-                mImageFragment = (ImageFragment)fragment;
-            } else if (fragment instanceof WeatherFragment) {
-                mWeatherFragment = (WeatherFragment)fragment;
-            } else if (fragment instanceof SettingFragment) {
-                mSettingFragment = (SettingFragment)fragment;
-            } else if (fragment instanceof AboutFragment) {
-                mAboutFragment = (AboutFragment)fragment;
+            String tag = mFragmentTags[i];
+            BaseFragment fragment = (BaseFragment)manager.findFragmentByTag(tag);
+            if (TextUtils.equals(FRAGMENT_TAG_NEWS, tag)) {
+                mAllNewsFragment = fragment;
+            } else if (TextUtils.equals(FRAGMENT_TAG_IMAGE, tag)) {
+                mImageFragment = fragment;
+            } else if (TextUtils.equals(FRAGMENT_TAG_WEATHER, tag)) {
+                mWeatherFragment = fragment;
+            } else if (TextUtils.equals(FRAGMENT_TAG_SETTING, tag)) {
+                mSettingFragment = fragment;
+            } else if (TextUtils.equals(FRAGMENT_TAG_ABOUT, tag)) {
+                mAboutFragment = fragment;
+            }
+            if (fragment == null) {
+                continue;
             }
             transaction.hide(fragment);
         }

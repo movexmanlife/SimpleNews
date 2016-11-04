@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.robot.simplenews.R;
+import com.robot.simplenews.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 
 /**
  */
-public class AllNewsFragment extends Fragment {
+public class AllNewsFragment extends BaseFragment {
     public static final int NEWS_TYPE_TOP = 0;
     public static final int NEWS_TYPE_NBA = 1;
     public static final int NEWS_TYPE_CARS = 2;

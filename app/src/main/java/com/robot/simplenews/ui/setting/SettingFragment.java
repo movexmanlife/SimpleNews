@@ -12,6 +12,9 @@ import android.widget.CompoundButton;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.robot.simplenews.ConstDef;
 import com.robot.simplenews.R;
+import com.robot.simplenews.event.EventTag;
+import com.robot.simplenews.event.RxBus;
+import com.robot.simplenews.ui.base.BaseFragment;
 import com.robot.simplenews.util.SharedPreferencesUtil;
 
 import butterknife.BindView;
@@ -20,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * 设置页面
  */
-public class SettingFragment extends Fragment implements SettingContract.View {
+public class SettingFragment extends BaseFragment implements SettingContract.View {
     private static final String TAG = SettingFragment.class.getSimpleName();
 
     @BindView(R.id.switchBtn)
@@ -71,6 +74,7 @@ public class SettingFragment extends Fragment implements SettingContract.View {
 
     @Override
     public void showNight(boolean isNight) {
+        RxBus.get().post(EventTag.NIGHT_MODE, isNight);
         if (isNight) {
             SharedPreferencesUtil.setBoolean(getContext(), ConstDef.IS_NIGHT, true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

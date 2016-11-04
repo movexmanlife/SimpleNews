@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.robot.simplenews.R;
 import com.robot.simplenews.entity.WeatherEntity;
+import com.robot.simplenews.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * 天气预报页面
  */
-public class WeatherFragment extends Fragment implements WeatherContract.View {
+public class WeatherFragment extends BaseFragment implements WeatherContract.View {
 
     private WeatherPresenter mWeatherPresenter;
     @BindView(R.id.today)

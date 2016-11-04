@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.robot.simplenews.R;
+import com.robot.simplenews.ui.base.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * 关于页面
  */
-public class AboutFragment extends Fragment implements AboutContract.View {
+public class AboutFragment extends BaseFragment implements AboutContract.View {
     private static final String TAG = AboutFragment.class.getSimpleName();
 
     @BindView(R.id.tv_version)

@@ -15,13 +15,14 @@ import android.view.ViewGroup;
 import com.robot.simplenews.R;
 import com.robot.simplenews.adapter.ImageAdapter;
 import com.robot.simplenews.entity.ImageEntity;
+import com.robot.simplenews.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  */
-public class ImageFragment extends Fragment implements ImageContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class ImageFragment extends BaseFragment implements ImageContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = ImageFragment.class.getSimpleName();
 
