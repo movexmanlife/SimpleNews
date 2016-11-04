@@ -56,4 +56,6 @@ dependencies {
     compile 'com.orhanobut:logger:1.15'
     // switchbutton
     compile 'com.kyleduo.switchbutton:library:1.4.4'
+    // permissiongen
+    compile 'com.lovedise:permissiongen:0.0.6'
 }

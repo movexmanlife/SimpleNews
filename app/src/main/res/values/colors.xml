@@ -10,6 +10,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
     <color name="white">#ffffff</color>
+    <color name="blue">#00f</color>
 
     <color name="content_bg">#eaeef4</color>
     <color name="setting_text_dark_color">#212121</color>
