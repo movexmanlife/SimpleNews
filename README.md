@@ -12,5 +12,8 @@ This project use:
 
 (4)BottomSheetDialog,DayNight Theme;
 
+(5)Android 6.0 permission handle;
+
 <img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot1.gif"/>
 <img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot2.gif"/>
+<img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot3.gif"/>
