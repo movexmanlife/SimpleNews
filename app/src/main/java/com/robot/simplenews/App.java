@@ -1,7 +1,7 @@
 package com.robot.simplenews;
 
-import android.app.Application;
 
+import com.activeandroid.app.Application;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 

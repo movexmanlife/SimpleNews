@@ -3,17 +3,26 @@ package com.robot.simplenews.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 /**
  * 图片实体类
  */
-public class ImageEntity implements Parcelable {
+@Table(name = "image_table", id = "_id")
+public class ImageEntity extends Model implements Parcelable {
 
     private static final long serialVersionUID = 1L;
-
+    @Column
     private String title;
+    @Column
     private String thumburl;
+    @Column
     private String sourceurl;
+    @Column
     private int height;
+    @Column
     private int width;
 
     public String getTitle() {

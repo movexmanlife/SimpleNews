@@ -11,6 +11,7 @@ import java.util.List;
 public class ImageContract {
     public interface View extends BaseView {
         void addImages(List<ImageEntity> list);
+        int getImageCount();
         void showProgress();
         void hideProgress();
         void showLoadFailMsg();

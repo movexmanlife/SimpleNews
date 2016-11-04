@@ -37,4 +37,5 @@
     <string name="share_wechat">分享到微信</string>
     <string name="share_sms">分享到短信</string>
     <string name="night_mode">夜间模式</string>
+    <string name="permission_deny_call_msg">您拒绝了打电话的权限，需要重新赋予权限！</string>
 </resources>

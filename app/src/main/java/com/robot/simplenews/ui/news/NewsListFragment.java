@@ -142,6 +142,11 @@ public class NewsListFragment extends Fragment implements NewsContract.View, Swi
     }
 
     @Override
+    public int getNewsCount() {
+        return mAdapter.getItemCount();
+    }
+
+    @Override
     public void showSwipeRefresh() {
         mSwipeRefreshWidget.setRefreshing(true);
     }

@@ -108,6 +108,11 @@ public class ImageFragment extends BaseFragment implements ImageContract.View, S
     }
 
     @Override
+    public int getImageCount() {
+        return mAdapter.getItemCount();
+    }
+
+    @Override
     public void showProgress() {
         mSwipeRefreshWidget.setRefreshing(true);
     }

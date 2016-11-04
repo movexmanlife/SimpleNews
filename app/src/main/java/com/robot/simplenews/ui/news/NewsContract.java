@@ -15,6 +15,7 @@ public class NewsContract {
         void hideSwipeRefresh();
 
         void addNews(List<NewsEntity> newsList);
+        int getNewsCount();
 
         void showLoadFailMsg();
     }

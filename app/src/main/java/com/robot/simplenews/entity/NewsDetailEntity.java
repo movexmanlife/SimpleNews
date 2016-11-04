@@ -3,39 +3,51 @@ package com.robot.simplenews.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import java.util.List;
 
 /**
  * 新闻详情实体类
  */
-public class NewsDetailEntity implements Parcelable {
+@Table(name = "news_detail_table", id = "_id")
+public class NewsDetailEntity extends Model implements Parcelable {
     /**
      * docid
      */
+    @Column
     private String docid;
     /**
      * title
      */
+    @Column
     private String title;
     /**
      * source
      */
+    @Column
     private String source;
     /**
      * body
      */
+    @Column
     private String body;
     /**
      * ptime
      */
+    @Column
     private String ptime;
     /**
      * cover
      */
+    @Column
     private String cover;
     /**
      * 图片列表
      */
+    @Column
     private List<String> imgList;
 
 

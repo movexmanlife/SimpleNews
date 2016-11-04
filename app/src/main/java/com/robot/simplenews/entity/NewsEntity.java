@@ -3,39 +3,54 @@ package com.robot.simplenews.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 /**
  * 新闻实体类
  */
-public class NewsEntity implements Parcelable {
+@Table(name = "news_table", id = "_id")
+public class NewsEntity extends Model implements Parcelable {
 
     /**
      * docid
      */
+    @Column
     private String docid;
     /**
      * 标题
      */
+    @Column
     private String title;
     /**
      * 小内容
      */
+    @Column
     private String digest;
     /**
      * 图片地址
      */
+    @Column
     private String imgsrc;
     /**
      * 来源
      */
+    @Column
     private String source;
     /**
      * 时间
      */
+    @Column
     private String ptime;
     /**
      * TAG
      */
+    @Column
     private String tag;
+
+    @Column
+    private int type;
 
     public String getDocid() {
         return docid;
@@ -93,6 +108,17 @@ public class NewsEntity implements Parcelable {
         this.tag = tag;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public NewsEntity() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -107,9 +133,7 @@ public class NewsEntity implements Parcelable {
         dest.writeString(this.source);
         dest.writeString(this.ptime);
         dest.writeString(this.tag);
-    }
-
-    public NewsEntity() {
+        dest.writeInt(this.type);
     }
 
     protected NewsEntity(Parcel in) {
@@ -120,6 +144,7 @@ public class NewsEntity implements Parcelable {
         this.source = in.readString();
         this.ptime = in.readString();
         this.tag = in.readString();
+        this.type = in.readInt();
     }
 
     public static final Creator<NewsEntity> CREATOR = new Creator<NewsEntity>() {
