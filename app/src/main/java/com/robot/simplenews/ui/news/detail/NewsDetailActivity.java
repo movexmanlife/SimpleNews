@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.robot.simplenews.R;
 import com.robot.simplenews.adapter.OnItemClickListener;
 import com.robot.simplenews.adapter.ShareAdapter;
@@ -29,11 +30,14 @@ import com.robot.simplenews.util.ToastUtil;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+import rx.functions.Action1;
 
 /**
  * 新闻详情界面
@@ -91,6 +95,18 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailContra
         mNewsDetailPresenter = new NewsDetailPresenter(this);
         mNewsDetailPresenter.attachView(this);
         mNewsDetailPresenter.loadNewsDetail(mNews.getDocid());
+
+        /**
+         * 防止抖动
+         */
+        RxView.clicks(mFab)
+                .throttleFirst(2000, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        onShare();
+                    }
+                });
     }
 
     @Override
@@ -108,7 +124,6 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailContra
         mProgressBar.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.fab)
     public void onShare() {
         showShareDialog();
     }

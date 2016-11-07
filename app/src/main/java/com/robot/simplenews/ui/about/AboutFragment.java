@@ -13,11 +13,14 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.robot.simplenews.ConstDef;
 import com.robot.simplenews.R;
 import com.robot.simplenews.ui.base.BaseFragment;
 import com.robot.simplenews.util.IntentUtil;
 import com.robot.simplenews.util.ToastUtil;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +28,7 @@ import butterknife.OnClick;
 import kr.co.namee.permissiongen.PermissionFail;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
+import rx.functions.Action1;
 
 /**
  * 关于页面
@@ -56,6 +60,18 @@ public class AboutFragment extends BaseFragment implements AboutContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, null);
         ButterKnife.bind(this, view);
+
+        /**
+         * 防止抖动
+         */
+        RxView.clicks(mCallTv)
+                .throttleFirst(2000, TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        makePhoneCall(mCallTv);
+                    }
+                });
         return view;
     }
 
@@ -77,8 +93,11 @@ public class AboutFragment extends BaseFragment implements AboutContract.View {
         mVersionTv.setText(version);
     }
 
-    @OnClick(R.id.tv_call)
-    public void call(View view) {
+    /**
+     * 拨打电话
+     * @param view
+     */
+    public void makePhoneCall(View view) {
         PermissionGen.needPermission(AboutFragment.this, ConstDef.PERMISSION_REQUEST_CODE_CALL,
                 new String[]{
                         Manifest.permission.CALL_PHONE,
