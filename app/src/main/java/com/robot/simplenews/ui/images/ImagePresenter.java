@@ -24,7 +24,6 @@ public class ImagePresenter implements ImageContract.Presenter {
     private RxFragment mRxFragment;
     private Context mContext;
     private ImageContract.View mImageView;
-    private Subscription mSubscription;
 
     public ImagePresenter(RxFragment rxFragment) {
         this.mRxFragment = rxFragment;
@@ -38,14 +37,13 @@ public class ImagePresenter implements ImageContract.Presenter {
 
     @Override
     public void detachView() {
-        RxUtil.unsubscribe(mSubscription);
         mImageView = null;
     }
 
     @Override
     public void loadImageList() {
         mImageView.showProgress();
-        mSubscription = NewsApi.getInstance().getImageList()
+        NewsApi.getInstance().getImageList()
                 .compose((mRxFragment).<List<ImageEntity>>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<List<ImageEntity>>() {
                     @Override

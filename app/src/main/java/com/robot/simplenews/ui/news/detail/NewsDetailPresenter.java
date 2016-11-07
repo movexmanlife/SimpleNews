@@ -19,7 +19,6 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     private RxAppCompatActivity mRxActivity;
     private Context mContext;
     private NewsDetailContract.View mNewsDetailView;
-    private Subscription mSubscription;
 
     public NewsDetailPresenter(RxAppCompatActivity rxActivity) {
         this.mRxActivity = rxActivity;
@@ -33,14 +32,13 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
 
     @Override
     public void detachView() {
-        RxUtil.unsubscribe(mSubscription);
         mNewsDetailView = null;
     }
 
     @Override
     public void loadNewsDetail(String docId) {
         mNewsDetailView.showProgress();
-        mSubscription = NewsApi.getInstance().getNewsDetail(docId).observeOn(AndroidSchedulers.mainThread())
+        NewsApi.getInstance().getNewsDetail(docId).observeOn(AndroidSchedulers.mainThread())
                 .compose((mRxActivity).<NewsDetailEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Action1<NewsDetailEntity>() {
                     @Override

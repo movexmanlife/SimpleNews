@@ -1,22 +1,17 @@
 package com.robot.simplenews.ui.weather;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
+import com.robot.simplenews.R;
 import com.robot.simplenews.api.news.NewsApi;
 import com.robot.simplenews.entity.LocationCityEntity;
-import com.robot.simplenews.entity.NewsEntity;
 import com.robot.simplenews.entity.WeatherEntity;
 import com.robot.simplenews.util.LogUtil;
 import com.robot.simplenews.util.NetworkUtil;
-import com.robot.simplenews.util.RxUtil;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -32,8 +27,6 @@ public class WeatherPresenter implements WeatherContract.Presenter {
     private RxFragment mRxFragment;
     private Context mContext;
     private WeatherContract.View mWeatherView;
-    private Subscription mLocationCitySubscription;
-    private Subscription mWeatherSubscription;
 
     public WeatherPresenter(RxFragment rxFragment) {
         this.mRxFragment = rxFragment;
@@ -47,8 +40,6 @@ public class WeatherPresenter implements WeatherContract.Presenter {
 
     @Override
     public void detachView() {
-        RxUtil.unsubscribe(mLocationCitySubscription);
-        RxUtil.unsubscribe(mWeatherSubscription);
         mWeatherView = null;
     }
 
@@ -64,7 +55,7 @@ public class WeatherPresenter implements WeatherContract.Presenter {
     }
 
     public void loadWeatherData(String cityName) {
-        mWeatherSubscription = NewsApi.getInstance().getWeather(cityName)
+        NewsApi.getInstance().getWeather(cityName)
                 .compose((mRxFragment).<List<WeatherEntity>>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<List<WeatherEntity>>() {
                     @Override
@@ -104,12 +95,12 @@ public class WeatherPresenter implements WeatherContract.Presenter {
          */
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (location == null) {
-            LogUtil.e(TAG, "location failure.");
+            mWeatherView.showErrorToast(mContext.getString(R.string.get_location_failed));
             return;
         }
         double latitude = location.getLatitude(); //经度
         double longitude = location.getLongitude(); //纬度
-        mLocationCitySubscription = NewsApi.getInstance().getLocation(latitude, longitude)
+        NewsApi.getInstance().getLocation(latitude, longitude)
                 .compose((mRxFragment).<LocationCityEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<LocationCityEntity>() {
                     @Override
@@ -138,7 +129,7 @@ public class WeatherPresenter implements WeatherContract.Presenter {
     }
 
     private void locationFailed() {
-        mWeatherView.showErrorToast("定位失败");
+        mWeatherView.showErrorToast(mContext.getString(R.string.get_location_failed));
         mWeatherView.setCity(LocationCityEntity.DEFAULT_CITY);
         loadWeatherData(LocationCityEntity.DEFAULT_CITY);
     }

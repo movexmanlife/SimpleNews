@@ -13,7 +13,6 @@ import rx.Subscription;
 public class AboutPresenter implements AboutContract.Presenter {
     private Context mContext;
     private AboutContract.View mAboutView;
-    private Subscription mSubscription;
 
     public AboutPresenter(Context context) {
         this.mContext = context;
@@ -26,7 +25,6 @@ public class AboutPresenter implements AboutContract.Presenter {
 
     @Override
     public void detachView() {
-        RxUtil.unsubscribe(mSubscription);
         mAboutView = null;
     }
 

@@ -22,7 +22,6 @@ public class NewsPresenter implements NewsContract.Presenter {
     private RxFragment mRxFragment;
     private Context mContext;
     private NewsContract.View mNewsView;
-    private Subscription mSubscription;
 
     public NewsPresenter(RxFragment rxFragment) {
         this.mRxFragment = rxFragment;
@@ -36,7 +35,6 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void detachView() {
-        RxUtil.unsubscribe(mSubscription);
         mNewsView = null;
     }
 
@@ -46,7 +44,7 @@ public class NewsPresenter implements NewsContract.Presenter {
         if (pageIndex == 0) {
             mNewsView.showSwipeRefresh();
         }
-        mSubscription = NewsApi.getInstance().getNewsList(type, pageIndex)
+        NewsApi.getInstance().getNewsList(type, pageIndex)
                 .compose((mRxFragment).<List<NewsEntity>>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<List<NewsEntity>>() {
                     @Override
