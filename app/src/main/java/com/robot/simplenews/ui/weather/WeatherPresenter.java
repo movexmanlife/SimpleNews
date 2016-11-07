@@ -7,14 +7,18 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
 import com.robot.simplenews.api.news.NewsApi;
 import com.robot.simplenews.entity.LocationCityEntity;
+import com.robot.simplenews.entity.NewsEntity;
 import com.robot.simplenews.entity.WeatherEntity;
 import com.robot.simplenews.util.LogUtil;
 import com.robot.simplenews.util.NetworkUtil;
 import com.robot.simplenews.util.RxUtil;
+import com.trello.rxlifecycle.android.FragmentEvent;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.util.List;
 
@@ -25,13 +29,15 @@ import rx.functions.Action1;
  */
 public class WeatherPresenter implements WeatherContract.Presenter {
     private static final String TAG = WeatherPresenter.class.getSimpleName();
+    private RxFragment mRxFragment;
     private Context mContext;
     private WeatherContract.View mWeatherView;
     private Subscription mLocationCitySubscription;
     private Subscription mWeatherSubscription;
 
-    public WeatherPresenter(Context context) {
-        this.mContext = context;
+    public WeatherPresenter(RxFragment rxFragment) {
+        this.mRxFragment = rxFragment;
+        this.mContext = mRxFragment.getActivity();
     }
 
     @Override
@@ -59,6 +65,7 @@ public class WeatherPresenter implements WeatherContract.Presenter {
 
     public void loadWeatherData(String cityName) {
         mWeatherSubscription = NewsApi.getInstance().getWeather(cityName)
+                .compose((mRxFragment).<List<WeatherEntity>>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<List<WeatherEntity>>() {
                     @Override
                     public void call(List<WeatherEntity> weatherEntityList) {
@@ -85,13 +92,16 @@ public class WeatherPresenter implements WeatherContract.Presenter {
 
     private void getLocation() {
         LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (mContext.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && mContext.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                LogUtil.e(TAG, "location failure.");
-                return;
-            }
-        }
+        /**
+         * java.lang.SecurityException: ConnectivityService: Neither user 10092 nor current process has android.permission.ACCESS_NETWORK_STATE.
+         * 这里需要如下的权限：
+         * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+         * Google将权限分为两类：
+         * 一类是Normal Permissions，这类权限一般不涉及用户隐私，是不需要用户进行授权的，比如手机震动、访问网络等；
+         * 另一类是Dangerous Permission，一般是涉及到用户隐私的，需要用户进行授权，比如读取sdcard、访问通讯录等。
+         *
+         * LocationManager.NETWORK_PROVIDER这个权限无需专门检测，只需在manifast.xml文件中配置即可。
+         */
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (location == null) {
             LogUtil.e(TAG, "location failure.");
@@ -100,6 +110,7 @@ public class WeatherPresenter implements WeatherContract.Presenter {
         double latitude = location.getLatitude(); //经度
         double longitude = location.getLongitude(); //纬度
         mLocationCitySubscription = NewsApi.getInstance().getLocation(latitude, longitude)
+                .compose((mRxFragment).<LocationCityEntity>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<LocationCityEntity>() {
                     @Override
                     public void call(LocationCityEntity locationCityEntity) {

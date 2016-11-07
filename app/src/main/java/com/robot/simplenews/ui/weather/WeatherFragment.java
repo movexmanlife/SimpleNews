@@ -1,5 +1,6 @@
 package com.robot.simplenews.ui.weather;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,15 +13,22 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.robot.simplenews.ConstDef;
 import com.robot.simplenews.R;
 import com.robot.simplenews.entity.WeatherEntity;
 import com.robot.simplenews.ui.base.BaseFragment;
+import com.robot.simplenews.util.IntentUtil;
+import com.robot.simplenews.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import kr.co.namee.permissiongen.PermissionFail;
+import kr.co.namee.permissiongen.PermissionGen;
+import kr.co.namee.permissiongen.PermissionSuccess;
 
 /**
  * 天气预报页面
@@ -59,7 +67,7 @@ public class WeatherFragment extends BaseFragment implements WeatherContract.Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWeatherPresenter = new WeatherPresenter(getActivity());
+        mWeatherPresenter = new WeatherPresenter(this);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class WeatherFragment extends BaseFragment implements WeatherContract.Vie
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mWeatherPresenter.loadWeatherData();
+        getLocation();
     }
 
     @Override
@@ -152,5 +160,35 @@ public class WeatherFragment extends BaseFragment implements WeatherContract.Vie
     public void onDestroyView() {
         super.onDestroyView();
         mWeatherPresenter.detachView();
+    }
+
+    /**
+     * 这两个权限为同一组危险权限，授权任何一个都可以
+     * group:android.permission-group.LOCATION
+     *     permission:android.permission.ACCESS_FINE_LOCATION
+     *     permission:android.permission.ACCESS_COARSE_LOCATION
+     */
+    public void getLocation() {
+        PermissionGen.needPermission(WeatherFragment.this, ConstDef.ACCESS_FINE_LOCATION,
+                new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                }
+        );
+    }
+
+    @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                                     int[] grantResults) {
+        PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    @PermissionSuccess(requestCode = ConstDef.ACCESS_FINE_LOCATION)
+    public void doLocation(){
+        mWeatherPresenter.loadWeatherData();
+    }
+
+    @PermissionFail(requestCode = ConstDef.ACCESS_FINE_LOCATION)
+    public void doLocationFail(){
+        ToastUtil.show(R.string.permission_deny_access_location);
     }
 }

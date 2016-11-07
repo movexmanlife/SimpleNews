@@ -9,6 +9,9 @@ import com.robot.simplenews.db.NewsOperator;
 import com.robot.simplenews.entity.ImageEntity;
 import com.robot.simplenews.entity.NewsEntity;
 import com.robot.simplenews.util.RxUtil;
+import com.trello.rxlifecycle.android.ActivityEvent;
+import com.trello.rxlifecycle.android.FragmentEvent;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.util.List;
 
@@ -18,12 +21,14 @@ import rx.functions.Action1;
 /**
  */
 public class ImagePresenter implements ImageContract.Presenter {
+    private RxFragment mRxFragment;
     private Context mContext;
     private ImageContract.View mImageView;
     private Subscription mSubscription;
 
-    public ImagePresenter(Context context) {
-        this.mContext = context;
+    public ImagePresenter(RxFragment rxFragment) {
+        this.mRxFragment = rxFragment;
+        this.mContext = mRxFragment.getActivity();
     }
 
     @Override
@@ -41,6 +46,7 @@ public class ImagePresenter implements ImageContract.Presenter {
     public void loadImageList() {
         mImageView.showProgress();
         mSubscription = NewsApi.getInstance().getImageList()
+                .compose((mRxFragment).<List<ImageEntity>>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<List<ImageEntity>>() {
                     @Override
                     public void call(List<ImageEntity> imageEntityList) {

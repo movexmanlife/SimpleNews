@@ -5,8 +5,11 @@ import android.support.annotation.NonNull;
 
 import com.robot.simplenews.api.news.NewsApi;
 import com.robot.simplenews.db.NewsOperator;
+import com.robot.simplenews.entity.ImageEntity;
 import com.robot.simplenews.entity.NewsEntity;
 import com.robot.simplenews.util.RxUtil;
+import com.trello.rxlifecycle.android.FragmentEvent;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.util.List;
 
@@ -16,12 +19,14 @@ import rx.functions.Action1;
 /**
  */
 public class NewsPresenter implements NewsContract.Presenter {
+    private RxFragment mRxFragment;
     private Context mContext;
     private NewsContract.View mNewsView;
     private Subscription mSubscription;
 
-    public NewsPresenter(Context context) {
-        this.mContext = context;
+    public NewsPresenter(RxFragment rxFragment) {
+        this.mRxFragment = rxFragment;
+        this.mContext = mRxFragment.getActivity();
     }
 
     @Override
@@ -42,6 +47,7 @@ public class NewsPresenter implements NewsContract.Presenter {
             mNewsView.showSwipeRefresh();
         }
         mSubscription = NewsApi.getInstance().getNewsList(type, pageIndex)
+                .compose((mRxFragment).<List<NewsEntity>>bindUntilEvent(FragmentEvent.DESTROY))
                 .subscribe(new Action1<List<NewsEntity>>() {
                     @Override
                     public void call(List<NewsEntity> newsEntityList) {

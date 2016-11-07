@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import com.robot.simplenews.api.news.NewsApi;
 import com.robot.simplenews.entity.NewsDetailEntity;
 import com.robot.simplenews.util.RxUtil;
+import com.trello.rxlifecycle.android.ActivityEvent;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,12 +16,14 @@ import rx.functions.Action1;
 /**
  */
 public class NewsDetailPresenter implements NewsDetailContract.Presenter {
+    private RxAppCompatActivity mRxActivity;
     private Context mContext;
     private NewsDetailContract.View mNewsDetailView;
     private Subscription mSubscription;
 
-    public NewsDetailPresenter(Context context) {
-        this.mContext = context;
+    public NewsDetailPresenter(RxAppCompatActivity rxActivity) {
+        this.mRxActivity = rxActivity;
+        this.mContext = mRxActivity;
     }
 
     @Override
@@ -37,6 +41,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     public void loadNewsDetail(String docId) {
         mNewsDetailView.showProgress();
         mSubscription = NewsApi.getInstance().getNewsDetail(docId).observeOn(AndroidSchedulers.mainThread())
+                .compose((mRxActivity).<NewsDetailEntity>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Action1<NewsDetailEntity>() {
                     @Override
                     public void call(NewsDetailEntity newsDetailEntity) {

@@ -22,6 +22,7 @@ import com.robot.simplenews.R;
 import com.robot.simplenews.adapter.OnItemClickListener;
 import com.robot.simplenews.adapter.ShareAdapter;
 import com.robot.simplenews.entity.NewsEntity;
+import com.robot.simplenews.ui.base.BaseActivity;
 import com.robot.simplenews.util.DensityUtil;
 import com.robot.simplenews.util.ImageLoaderUtil;
 import com.robot.simplenews.util.ToastUtil;
@@ -37,7 +38,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 /**
  * 新闻详情界面
  */
-public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailContract.View {
+public class NewsDetailActivity extends BaseActivity implements NewsDetailContract.View {
     private static final String TAG = NewsDetailActivity.class.getSimpleName();
     private static final String KEY_PARAM_NEWS = "news";
 
@@ -51,7 +52,6 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailC
     ProgressBar mProgressBar;
     BottomSheetDialog mDialog;
 
-    private SwipeBackLayout mSwipeBackLayout;
     private NewsDetailPresenter mNewsDetailPresenter;
     private NewsEntity mNews;
 
@@ -80,10 +80,6 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailC
                 onBackPressed();
             }
         });
-
-        mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEdgeSize(DensityUtil.getWidthInPx(this));
-        mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 
         mNews = (NewsEntity) getIntent().getParcelableExtra(KEY_PARAM_NEWS);
 

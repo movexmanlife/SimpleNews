@@ -17,6 +17,7 @@ import com.robot.simplenews.adapter.NewsAdapter;
 import com.robot.simplenews.adapter.OnItemClickListener;
 import com.robot.simplenews.commons.Urls;
 import com.robot.simplenews.entity.NewsEntity;
+import com.robot.simplenews.ui.base.BaseFragment;
 import com.robot.simplenews.ui.news.detail.NewsDetailActivity;
 import com.robot.simplenews.util.LogUtil;
 
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 /**
  * 新闻Fragment
  */
-public class NewsListFragment extends Fragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class NewsListFragment extends BaseFragment implements NewsContract.View, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = NewsListFragment.class.getSimpleName();
     private static final String KEY_PARAMS_TYPE = "type";
 
@@ -57,7 +58,7 @@ public class NewsListFragment extends Fragment implements NewsContract.View, Swi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNewsPresenter = new NewsPresenter(getActivity());
+        mNewsPresenter = new NewsPresenter(this);
         mType = getArguments().getInt("type");
     }
 

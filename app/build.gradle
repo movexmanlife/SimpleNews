@@ -58,4 +58,9 @@ dependencies {
     compile 'com.kyleduo.switchbutton:library:1.4.4'
     // permissiongen
     compile 'com.lovedise:permissiongen:0.0.6'
+
+    // rxlifecycle
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-android:1.0'
+    compile 'com.trello:rxlifecycle-components:1.0'
 }

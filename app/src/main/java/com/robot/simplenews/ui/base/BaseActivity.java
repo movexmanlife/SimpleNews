@@ -7,11 +7,12 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.robot.simplenews.ConstDef;
 import com.robot.simplenews.util.SharedPreferencesUtil;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 /**
  *
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends RxAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
