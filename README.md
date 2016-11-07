@@ -6,13 +6,13 @@ This project refactor of SimpleNews.
 This project use:
 (1)google mvp(https://github.com/googlesamples/android-architecture);
 
-(2)Rxjava;
+(2)Retrofit;
 
-(3)Retrofit;
+(3)BottomSheetDialog,DayNight Theme;
 
-(4)BottomSheetDialog,DayNight Theme;
+(4)Rxjava;
 
-(5)Android 6.0 permission handle;
+(5)RxPermissions, Android 6.0 permission handle;
 
 (6)Rxifecycle;
 
