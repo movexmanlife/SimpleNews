@@ -3,7 +3,6 @@ package com.robot.simplenews.ui.weather;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.robot.simplenews.ConstDef;
 import com.robot.simplenews.R;
 import com.robot.simplenews.entity.WeatherEntity;
 import com.robot.simplenews.ui.base.BaseFragment;
-import com.robot.simplenews.util.IntentUtil;
 import com.robot.simplenews.util.ToastUtil;
+import com.tbruyelle.rxpermissions.Permission;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import kr.co.namee.permissiongen.PermissionFail;
-import kr.co.namee.permissiongen.PermissionGen;
-import kr.co.namee.permissiongen.PermissionSuccess;
+import rx.functions.Action1;
 
 /**
  * 天气预报页面
@@ -169,26 +165,30 @@ public class WeatherFragment extends BaseFragment implements WeatherContract.Vie
      *     permission:android.permission.ACCESS_COARSE_LOCATION
      */
     public void getLocation() {
-        PermissionGen.needPermission(WeatherFragment.this, ConstDef.ACCESS_FINE_LOCATION,
-                new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                }
-        );
+        RxPermissions.getInstance(getContext())
+                .requestEach(Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribe(new Action1<Permission>() {
+                    @Override
+                    public void call(Permission permission) {
+                        if (permission.granted) {
+                            doLocationSuccess();
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // 权限拒绝，并且会弹出“权限提示对话框”
+                            doLocationSuccess();
+                        } else {
+                            // 权限拒绝，并且不会弹出“权限提示对话框”
+                            doLocationFail();
+                        }
+
+                    }
+                });
     }
 
-    @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                                     int[] grantResults) {
-        PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-    }
-
-    @PermissionSuccess(requestCode = ConstDef.ACCESS_FINE_LOCATION)
-    public void doLocation(){
+    public void doLocationSuccess() {
         mWeatherPresenter.loadWeatherData();
     }
 
-    @PermissionFail(requestCode = ConstDef.ACCESS_FINE_LOCATION)
-    public void doLocationFail(){
+    public void doLocationFail() {
         ToastUtil.show(R.string.permission_deny_access_location);
     }
 }
