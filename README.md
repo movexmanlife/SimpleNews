@@ -14,6 +14,10 @@ This project use:
 
 (5)Android 6.0 permission handle;
 
+(6)Rxifecycle;
+
+(7)Rxbinding;
+
 <img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot1.gif"/>
 <img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot2.gif"/>
 <img height="720" src="https://github.com/robotlife/SimpleNews/blob/master/screenshot/screenshot3.gif"/>
